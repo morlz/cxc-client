@@ -1,0 +1,36 @@
+{
+	"name": "cxc",
+	"version": "1.0.0",
+	"description": "Генерация ведомостей",
+	"productName": "Ведомость",
+	"cordovaId": "com.morlz.cxc",
+	"author": "morlz <morlz@mail.ru>",
+	"private": true,
+	"scripts": {
+		"test": "echo \"No test specified\" && exit 0",
+		"deploy:emptyDist": "node deploy/emptyDist",
+		"deploy:start": "node deploy/start",
+		"build": "npm run deploy:emptyDist && quasar build && npm run deploy:start"
+	},
+	"dependencies": {
+		"axios": "^0.18.0",
+		"browser-es6-map": "^1.0.1",
+		"browser-event-emitter": "^1.0.2",
+		"moment": "^2.22.1",
+		"vuex": "^3.0.1"
+	},
+	"devDependencies": {
+		"@babel/plugin-syntax-export-default-from": "^7.0.0-beta.49",
+		"ftp-deploy": "^2.1.1",
+		"quasar-cli": "^0.16.0"
+	},
+	"engines": {
+		"node": ">= 8.9.0",
+		"npm": ">= 5.6.0"
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not ie <= 10"
+	]
+}
