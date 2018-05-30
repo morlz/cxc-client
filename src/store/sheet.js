@@ -19,13 +19,17 @@ const actions = {
 			await dispatch('getGroup', state.cached.current.group_id)
 	},
 	async getOne ({ commit, dispatch }, id) {
+		commit('loadingSet', { current: true })
 		let current = await Sheet.getOne(id)
+		commit('loadingSet', { current: false })
 		if (!current) return
 
 		commit('cachedSet', { current })
 	},
 	async getGroup ({ commit, dispatch }, id) {
+		commit('loadingSet', { group: true })
 		let group = await Group.getOne(id)
+		commit('loadingSet', { group: false })
 		if (!group) return
 
 		commit('cachedSet', { group })

@@ -1,11 +1,18 @@
 <template>
-<div class="TableCell" :class="{ 'TableCell__holiday' : holiday }">
+<div
+	class="TableCell"
+	:class="{
+		'TableCell__holiday' : holiday,
+		'TableCell__vs' : vs
+	}"
+	:title="title"
+>
 	<div
 		class="TableCell__value"
 		@click="toggle"
 		:class="{ 'TableCell__selecting' : showed }"
 		 :style="{ color: +value ? '#000' : '#aaa' }">
-		{{ holiday ? '' : value }}
+		{{ !holiday && !vs ? value : ''  }}
 	</div>
 
 	<q-slide-transition>
@@ -30,7 +37,8 @@ export default {
 	props: {
 		value: [String, Number],
 		options: Array,
-		holiday: Boolean
+		holiday: Object,
+		vs: Boolean,
 	},
 	data () {
 		return {
@@ -41,7 +49,12 @@ export default {
 
 	},
 	computed: {
+		title () {
+			if (!this.holiday)
+				return ''
 
+			return this.holiday.localName
+		}
 	},
 	methods: {
 		select (option) {
@@ -57,6 +70,7 @@ export default {
 			document.removeEventListener('click', this.hide)
 		},
 		toggle () {
+			if (!!this.holiday || this.vs) return
 			this.showed ?
 				this.hide()
 			:	this.show()
@@ -89,8 +103,14 @@ export default {
 		background rgba(0, 0, 255, 0.1)
 
 	&__holiday
-		pointer-events none
+		//pointer-events none
+		cursor default
 		background #ddd
+
+	&__vs
+		//pointer-events none
+		cursor default
+		background #ded
 
 
 .Select

@@ -14,7 +14,9 @@ const actions = {
 		dispatch('getList')
 	},
 	async getList ({ commit, dispatch }) {
+		commit('loadingSet', { list: true })
 		let list = await Group.getList()
+		commit('loadingSet', { list: false })
 		if (!list) return
 
 		commit('cachedSet', { list })

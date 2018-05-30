@@ -1,5 +1,5 @@
 <template>
-<q-layout view="lHh Lpr lFf">
+<q-layout view="lHh Lpr lFf" v-if="logined">
 	<q-layout-header>
 		<q-toolbar color="primary" :glossy="$q.theme === 'mat'" :inverted="$q.theme === 'ios'">
 			<q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
@@ -23,27 +23,36 @@
 		<router-view :key="$route.fullPath"/>
 	</q-page-container>
 </q-layout>
+
+<auth v-else/>
 </template>
 
 <script>
 import {
 	openURL
 } from 'quasar'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import AppMenuProfile from '@/components/AppMenuProfile'
+import Auth from '@/pages/Auth'
 import GroupList from '@/components/GroupList'
 
 export default {
 	name: 'LayoutDefault',
 	components: {
 		AppMenuProfile,
-		GroupList
+		GroupList,
+		Auth
 	},
 	data() {
 		return {
 			leftDrawerOpen: this.$q.platform.is.desktop
 		}
+	},
+	computed: {
+		...mapGetters({
+			logined: 'auth/logined'
+		})
 	},
 	methods: {
 		openURL

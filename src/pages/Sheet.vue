@@ -46,6 +46,7 @@
 											:value="value"
 											:options="hours"
 											:holiday="isHoliday(currentMonth, vIndex)"
+											:vs="isVs(currentMonth, vIndex)"
 											@input="(sheet.setData(currentMonth, user.id, vIndex, $event), $nextTick(() => $forceUpdate()))"/>
 									</div>
 								</td>
@@ -69,6 +70,10 @@
 		<template v-if="currentMonth == 'result'">
 			<result-all/>
 		</template>
+
+		<q-inner-loading :visible="local_loading">
+			<q-spinner size="50px" color="primary"/>
+		</q-inner-loading>
 	</div>
 </q-page>
 </template>
@@ -97,7 +102,8 @@ export default {
 		return {
 			currentMonth: this.$moment().format('MMMM YYYY'),
 			hours,
-			holidays: []
+			holidays: [],
+			holidaysLoading: false
 		}
 	},
 	watch: {
@@ -106,13 +112,14 @@ export default {
 		},
 		async currentMonth () {
 			if (this.currentMonth === 'result') return
-			this.holidays = await Holiday.getList(this.$moment(this.currentMonth, 'MMMM YYYY'))
+			this.getHolidays()
 		}
 	},
 	computed: {
 		...mapState('sheet', {
 			sheet: state => state.cached.current,
 			group: state => state.cached.group,
+			loading: state => state.loading.current || state.loading.group
 		}),
 		currentMonthLength () {
 			if (this.currentMonth === 'result') return
@@ -123,23 +130,33 @@ export default {
 				return []
 
 			return this.group.users.sort( api.sortFnFactory(el => el.name, true) )
+		},
+		local_loading () {
+			return !this.sheet.id || this.loading || this.holidaysLoading
 		}
 	},
 	methods: {
 		isHoliday (month, day) {
 			let date = this.$moment(month, 'MMMM YYYY').date(day + 1)
-			if (date.day() === 6)
+
+			return this.holidays.find(el => el.is(date))
+		},
+		isVs (month, day) {
+			let date = this.$moment(month, 'MMMM YYYY').date(day + 1)
+			if (!date.day())
 				return true
 
-			return !!this.holidays.find(el => el.is(date))
+			return false
+		},
+		async getHolidays () {
+			this.holidaysLoading = true
+			this.holidays = await Holiday.getList(this.$moment(this.currentMonth, 'MMMM YYYY'))
+			this.holidaysLoading = false
 		}
 	},
 	async created () {
 		this.$store.dispatch('sheet/init', this.$route.params.id)
-		this.holidays = await Holiday.getList(this.$moment(this.currentMonth, 'MMMM YYYY'))
-	},
-	mounted () {
-
+		this.getHolidays()
 	}
 }
 </script>

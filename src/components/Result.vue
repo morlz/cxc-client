@@ -96,6 +96,7 @@ export default {
 <style lang="stylus">
 .SheetResultTable
 	border-collapse collapse
+	font-size 14px
 
 	&__1st
 		width 300px
