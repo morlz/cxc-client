@@ -110,9 +110,12 @@ export default {
 		grid-gap 10px
 		grid-template-columns 1fr 1fr
 
+		.q-item
+			cursor pointer
+
 	&__button
 		justify-self end
 
 	.selected
-		border 1px solid red
+		background rgba(189,189,189,0.4)
 </style>
