@@ -26,16 +26,4 @@ export default class Group extends BaseModel {
 
 		return new Group(res)
 	}
-
-	get admission () {
-		 return this._admission
-	}
-
-	get admissionText () {
-		return this._admission.format('DD MMMM YYYY')
-	}
-
-	set admission (val) {
-		this._admission = moment(val)
-	}
 }

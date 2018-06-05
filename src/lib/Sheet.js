@@ -142,7 +142,7 @@ export default class Sheet extends BaseModel {
 				if (hours >= from && ret)
 					return true
 			})
-			.map(el => el.name)
+			.map(el => el.name.split(' ')[0])
 
 		return res
 	}

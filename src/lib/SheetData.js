@@ -22,7 +22,7 @@ export default class SheetData extends BaseModel {
 	}
 
 	async save () {
-		let res = this.id ? api.put('data', this) : api.post('data', this)
+		let res = this.id ? api.put('data', this.serialize) : api.post('data', this.serialize)
 		if (!res) return
 
 		return this.update(res)
@@ -34,5 +34,12 @@ export default class SheetData extends BaseModel {
 
 	set value (val) {
 		this._value = +val
+	}
+
+	get serialize () {
+		return {
+			...this,
+			value: this.value,
+		}
 	}
 }
