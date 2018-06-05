@@ -161,8 +161,12 @@ export default {
 		}
 	},
 	async created () {
+		this.$store.commit('app/headerShadowSet', false)
 		this.$store.dispatch('sheet/init', this.$route.params.id)
 		this.getHolidays()
+	},
+	beforeDestroy () {
+		this.$store.commit('app/headerShadowSet', true)
 	}
 }
 </script>

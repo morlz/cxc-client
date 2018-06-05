@@ -1,5 +1,5 @@
 <template>
-<q-layout view="lHh Lpr lFf" v-if="logined" class="App">
+<q-layout view="lHh Lpr lFf" v-if="logined" class="App" :class="{ 'HeaderShadowDisable': !headerShadow }">
 	<q-layout-header>
 		<q-toolbar color="primary" :inverted="$q.theme === 'ios'">
 			<q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
@@ -52,7 +52,10 @@ export default {
 	computed: {
 		...mapGetters({
 			logined: 'auth/logined'
-		})
+		}),
+		...mapState('app', [
+			'headerShadow'
+		])
 	},
 	methods: {
 		openURL
@@ -61,7 +64,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.App
+.HeaderShadowDisable
 	.q-layout-header
 		box-shadow none
 </style>
