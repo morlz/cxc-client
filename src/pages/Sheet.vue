@@ -20,7 +20,7 @@
 							<td v-for="day in currentMonthLength">
 								<div class="Table__head">
 									<div class="Table__head-value">
-										{{ day }}
+										{{ currentMonthOffset + day }}
 									</div>
 								</div>
 							</td>
@@ -45,9 +45,9 @@
 										<table-cell
 											:value="value"
 											:options="hours"
-											:holiday="isHoliday(currentMonth, vIndex)"
-											:vs="isVs(currentMonth, vIndex)"
-											@input="(sheet.setData(currentMonth, user.id, vIndex, $event), $nextTick(() => $forceUpdate()))"/>
+											:holiday="isHoliday(currentMonth, vIndex + currentMonthOffset)"
+											:vs="isVs(currentMonth, vIndex + currentMonthOffset)"
+											@input="(sheet.setData(currentMonth, user.id, vIndex + currentMonthOffset, $event), $nextTick(() => $forceUpdate()))"/>
 									</div>
 								</td>
 
@@ -123,7 +123,13 @@ export default {
 		}),
 		currentMonthLength () {
 			if (this.currentMonth === 'result') return
-			return this.$moment(this.currentMonth).daysInMonth()
+			return this.$moment(this.currentMonth).daysInMonth() - this.currentMonthOffset
+		},
+		currentMonthOffset () {
+			if (!this.sheet.getMonthDaysOffset)
+				return 0
+
+			return this.sheet.getMonthDaysOffset(this.currentMonth)
 		},
 		users () {
 			if (!this.group.users)

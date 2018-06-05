@@ -39,11 +39,14 @@ export default class Sheet extends BaseModel {
 	}
 
 	getData (month, user_id) {
-		let mMonth = moment(month)
+		let mMonth = moment(month),
+			offset = this.getMonthDaysOffset(month)
+
 		mMonth.date(1)
+
 		let datas = this.getDataByMonth(month).filter(el => el.user_id == user_id)
-		return Array.apply(null, { length: mMonth.daysInMonth() }).map((el, index) => {
-			let data = this.findDataByDay(datas, index + 1)
+		return Array.apply(null, { length: mMonth.daysInMonth() - offset }).map((el, index) => {
+			let data = this.findDataByDay(datas, index + 1 + offset)
 			return data ? data.value : 0
 		})
 	}
@@ -145,5 +148,11 @@ export default class Sheet extends BaseModel {
 			.map(el => el.name.split(' ')[0])
 
 		return res
+	}
+
+	getMonthDaysOffset (date) {
+		return moment(this.from).format('MMMM YYYY') == date ?
+			moment(this.from).date()
+		:	0
 	}
 }
