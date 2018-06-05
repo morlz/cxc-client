@@ -15,6 +15,9 @@ const actions = {
 		let res = await User.signin(payload)
 		if (!res) return
 
+		if (!res.id)
+			return dispatch('alert', 'Неверное имя пользователя или пароль', { root: true })
+
 		commit('userSet', res)
 		router.push('/')
 	},
