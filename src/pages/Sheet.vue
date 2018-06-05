@@ -1,6 +1,6 @@
 <template>
 <q-page class="Sheet">
-	<q-tabs v-model="currentMonth">
+	<q-tabs v-model="currentMonth" class="Sheet__tabs">
 		<q-tab slot="title" v-for="tab, index in sheet.monthList" :key="index" :name="tab.format('MMMM YYYY')" :label="tab.format('MMMM YYYY')" />
 		<q-tab slot="title" name="result" label="ИТОГ" />
 	</q-tabs>
@@ -170,6 +170,9 @@ export default {
 <style lang="stylus">
 .Sheet
 	width 100%
+
+	&__tabs
+		box-shadow 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px rgba(0,0,0,0.14), 0 1px 10px rgba(0,0,0,0.12)
 
 	&__content
 		width 100%

@@ -45,9 +45,6 @@ export default {
 			showed: false
 		}
 	},
-	watch: {
-
-	},
 	computed: {
 		title () {
 			if (!this.holiday)
@@ -76,12 +73,6 @@ export default {
 			:	this.show()
 		}
 	},
-	created () {
-
-	},
-	mounted () {
-
-	}
 }
 </script>
 
@@ -91,6 +82,8 @@ export default {
 	height 100%
 	cursor pointer
 	position relative
+	user-select none
+
 	&__value
 		width 100%
 		height 100%
@@ -130,7 +123,6 @@ export default {
 	cursor pointer
 	width 40px
 	text-align center
-	user-select none
 	&:hover
 		background rgba(0, 0, 255, .15)
 

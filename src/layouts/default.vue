@@ -1,7 +1,7 @@
 <template>
-<q-layout view="lHh Lpr lFf" v-if="logined">
+<q-layout view="lHh Lpr lFf" v-if="logined" class="App">
 	<q-layout-header>
-		<q-toolbar color="primary" :glossy="$q.theme === 'mat'" :inverted="$q.theme === 'ios'">
+		<q-toolbar color="primary" :inverted="$q.theme === 'ios'">
 			<q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
 				<q-icon name="menu" />
 			</q-btn>
@@ -60,5 +60,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
+.App
+	.q-layout-header
+		box-shadow none
 </style>
