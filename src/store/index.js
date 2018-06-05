@@ -7,6 +7,7 @@ import group from './group'
 import sheet from './sheet'
 import notify from './notify'
 import app from './app'
+import permissions from './permissions'
 
 export default new Vuex.Store({
 	modules: {
@@ -14,7 +15,8 @@ export default new Vuex.Store({
 		group,
 		sheet,
 		notify,
-		app
+		app,
+		permissions
 	},
 	namespaced: true
 })

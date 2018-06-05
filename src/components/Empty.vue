@@ -8,7 +8,7 @@
 import {
 	mapGetters,
 	mapActions,
-	MapMutations,
+	mapMutations,
 	mapState
 } from 'vuex'
 

@@ -3,6 +3,8 @@ import Group from './Group'
 import Sheet from './Sheet'
 import SheetData from './SheetData'
 import Holiday from './Holiday'
+import Permission from './Permission'
+import PermissionSetup from './PermissionSetup'
 
 export default {}
 
@@ -11,5 +13,7 @@ export {
 	Group,
 	Sheet,
 	SheetData,
-	Holiday
+	Holiday,
+	Permission,
+	PermissionSetup
 }

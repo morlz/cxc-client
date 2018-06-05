@@ -1,11 +1,15 @@
 import BaseModel from '@/lib/BaseModel'
 import api from '@/api'
+import { Permission, PermissionSetup } from '@/lib'
 import moment from 'moment'
 
 export default class User extends BaseModel {
 	constructor (arg) {
 		super()
-		this.define({}, arg)
+		this.define({
+			permissions: [Permission],
+			permissionSetup: [PermissionSetup],
+		}, arg)
 	}
 
 	static async signin (data) {
@@ -20,6 +24,14 @@ export default class User extends BaseModel {
 		let res = await api.get('userdata')
 		if (res && res != 'Unauthorized.')
 			return new User(res)
+
+		return res
+	}
+
+	static async getList () {
+		let res = await api.get('users')
+		if (Array.isArray(res))
+			return res.map(el => new User(el))
 
 		return res
 	}

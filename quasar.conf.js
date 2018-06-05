@@ -68,7 +68,8 @@ module.exports = function(ctx) {
 				'QInnerLoading',
 				'QSpinner',
 				'QCollapsible',
-				'QDatetime'
+				'QDatetime',
+				'QToggle'
 			],
 			directives: [
 				'Ripple'

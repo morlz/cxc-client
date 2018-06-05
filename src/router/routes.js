@@ -4,6 +4,7 @@ export default [{
 		children: [
 			{ path: '', component: () => import ('pages/index') },
 			{ path: 'sheet/:id', component: () => import('pages/Sheet') },
+			{ path: 'permissions', component: () => import('pages/Permissions') },
 			{ path: 'add', component: () => import ('pages/Add'), children: [
 				{ path: 'sheet/:id', component: () => import ('pages/AddSheet') },
 			] },

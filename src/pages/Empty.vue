@@ -1,10 +1,16 @@
 <template>
-<div class="">
-
-</div>
+<q-page padding>
+</q-page>
 </template>
 
 <script>
+import {
+	mapGetters,
+	mapActions,
+	mapMutations,
+	mapState
+} from 'vuex'
+
 export default {
 	components: {
 
