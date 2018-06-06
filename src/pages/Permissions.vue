@@ -16,6 +16,8 @@
 				<q-field>
 					<q-input v-model="add.user.pass" float-label="Пароль"/>
 				</q-field>
+
+				<q-select v-model="add.user.role_id" :options="roles"/>
 			</q-card-main>
 
 			<q-card-actions>
@@ -45,20 +47,25 @@
 			<q-item
 				v-for="user, index in users"
 				:key="index"
-				:class="{ selected: isSelected('user', user.id) }">
+				:class="{ selected: isSelected('user', user.id) }"
+				@click.native="select({ type: 'user', id: user.id })">
 				<q-item-side v-if="showToggleUsers">
 					<q-toggle
 						:value="permissionUsers.includes(user.id)"
 						@input="toggleUser({ value: $event, id: user.id })"/>
 				</q-item-side>
 
-				<q-item-main @click.native="select({ type: 'user', id: user.id })">
+				<q-item-main>
 					<q-item-tile>
 						{{ user.login }}
 					</q-item-tile>
 
 					<q-item-tile>
 						{{ user.name }}
+					</q-item-tile>
+
+					<q-item-tile>
+						{{ roles.find(el => el.value == user.role_id).label }}
 					</q-item-tile>
 				</q-item-main>
 
@@ -74,14 +81,15 @@
 			<q-item
 				v-for="permission, index in permissions"
 				:key="index"
-				:class="{ selected: isSelected('permission', permission.id) }">
+				:class="{ selected: isSelected('permission', permission.id) }"
+				@click.native="select({ type: 'permission', id: permission.id })">
 				<q-item-side v-if="showTogglePermissions">
 					<q-toggle
 						:value="userPermissions.includes(permission.id)"
 						@input="togglePermission({ value: $event, id: permission.id })"/>
 				</q-item-side>
 
-				<q-item-main @click.native="select({ type: 'permission', id: permission.id })">
+				<q-item-main>
 					<q-item-tile>
 						{{ permission.name }}
 					</q-item-tile>
@@ -118,7 +126,12 @@ export default {
 			add: {
 				user: new User(),
 				permission: new Permission()
-			}
+			},
+			roles: [
+				{ value: 1, label: 'Админ' },
+				{ value: 2, label: 'Преподаватель' },
+				{ value: 3, label: 'Пользователь' },
+			]
 		}
 	},
 	computed: {

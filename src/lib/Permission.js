@@ -25,7 +25,7 @@ export default class Permission extends BaseModel {
 	}
 
 	async save () {
-		let res = this.id ? api.put('permission', this) : api.post('permission', this)
+		let res = this.id ? await api.put('permission', this) : await api.post('permission', this)
 		if (!res) return
 
 		return this.update(res)

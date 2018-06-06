@@ -22,7 +22,7 @@ export default class SheetData extends BaseModel {
 	}
 
 	async save () {
-		let res = this.id ? api.put('data', this.serialize) : api.post('data', this.serialize)
+		let res = this.id ? await api.put('data', this.serialize) : await api.post('data', this.serialize)
 		if (!res) return
 
 		return this.update(res)

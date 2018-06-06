@@ -56,7 +56,7 @@ export default class User extends BaseModel {
 	}
 
 	async save () {
-		let res = this.id ? api.put('user', this) : api.post('user', this)
+		let res = this.id ? await api.put('user', this) : await api.post('user', this)
 		if (!res) return
 
 		return this.update(res)
