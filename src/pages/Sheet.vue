@@ -2,16 +2,16 @@
 <q-page class="Sheet">
 	<q-tabs v-model="currentMonth" class="Sheet__tabs">
 		<q-tab slot="title" v-for="tab, index in sheet.monthList" :key="index" :name="tab.format('MMMM YYYY')" :label="tab.format('MMMM YYYY')" />
-		<q-tab slot="title" name="result" label="ИТОГ" />
+		<q-tab slot="title" name="result" label="ИТОГ" v-if="auth_can('sheet-result')"/>
 	</q-tabs>
 
 	<div class="Sheet__content" :key="currentMonth">
 		<template v-if="sheet && currentMonth != 'result'">
 			<q-tabs inverted>
-				<q-tab slot="title" name="table" label="Таблица" default/>
-				<q-tab slot="title" name="res" label="Итог"/>
+				<q-tab slot="title" name="table" label="Таблица" default v-if="auth_can('month')"/>
+				<q-tab slot="title" name="res" label="Итог" v-if="auth_can('month-result')"/>
 
-				<q-tab-pane name="table">
+				<q-tab-pane name="table" v-if="auth_can('month')">
 					<table class="Table">
 						<tr>
 							<td>
@@ -67,7 +67,7 @@
 			</q-tabs>
 		</template>
 
-		<template v-if="currentMonth == 'result'">
+		<template v-if="currentMonth == 'result' && auth_can('month-result')">
 			<result-all/>
 		</template>
 
@@ -86,6 +86,7 @@ import { Holiday } from '@/lib'
 import api from '@/api'
 import ResultAll from '@/components/ResultAll'
 import Result from '@/components/Result'
+import { AuthMixin } from '@/mixins'
 
 const hours = Array.apply(null, { length: 9 }).map((el, index) => ({
 	label: ((index - 4) * 2).toFixed(),
@@ -98,6 +99,7 @@ export default {
 		ResultAll,
 		Result
 	},
+	mixins: [AuthMixin],
 	data () {
 		return {
 			currentMonth: this.$moment().format('MMMM YYYY'),

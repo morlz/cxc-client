@@ -1,5 +1,5 @@
 <template>
-<q-layout view="lHh Lpr lFf" v-if="logined" class="App" :class="{ 'HeaderShadowDisable': !headerShadow }">
+<q-layout view="lHh Lpr lFf" v-if="logined && auth_can('auth')" class="App" :class="{ 'HeaderShadowDisable': !headerShadow }">
 	<q-layout-header>
 		<q-toolbar color="primary" :inverted="$q.theme === 'ios'">
 			<q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
@@ -35,6 +35,7 @@ import { mapState, mapGetters } from 'vuex'
 import AppMenuProfile from '@/components/AppMenuProfile'
 import Auth from '@/pages/Auth'
 import GroupList from '@/components/GroupList'
+import { AuthMixin } from '@/mixins'
 
 export default {
 	name: 'LayoutDefault',
@@ -43,6 +44,7 @@ export default {
 		GroupList,
 		Auth
 	},
+	mixins: [AuthMixin],
 	data() {
 		return {
 			leftDrawerOpen: this.$q.platform.is.desktop

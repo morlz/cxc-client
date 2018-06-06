@@ -3,7 +3,7 @@
 	<q-btn color="primary" class="Permissions__button" @click="save">Сохранить состояние</q-btn>
 
 	<div class="Permissions__lists">
-		<q-card class="AddUserForm">
+		<q-card class="AddUserForm" v-if="auth_can('user-add')">
 			<q-card-main class="AddFormInner">
 				<q-field>
 					<q-input v-model="add.user.name" float-label="ФИО"/>
@@ -23,7 +23,7 @@
 			</q-card-actions>
 		</q-card>
 
-		<q-card class="AddPermissionForm">
+		<q-card class="AddPermissionForm" v-if="auth_can('permission-add')">
 			<q-card-main class="AddFormInner">
 				<q-field>
 					<q-input v-model="add.permission.name" float-label="Название"/>
@@ -52,11 +52,17 @@
 						@input="toggleUser({ value: $event, id: user.id })"/>
 				</q-item-side>
 
-				<q-item-main
-					:label="user.name"
-					@click.native="select({ type: 'user', id: user.id })"/>
+				<q-item-main @click.native="select({ type: 'user', id: user.id })">
+					<q-item-tile>
+						{{ user.login }}
+					</q-item-tile>
 
-				<q-item-side>
+					<q-item-tile>
+						{{ user.name }}
+					</q-item-tile>
+				</q-item-main>
+
+				<q-item-side v-if="auth_can('user-remove')">
 					<q-btn flat color="negative" icon="delete" @click.stop="deleteUser(user)"/>
 				</q-item-side>
 			</q-item>
@@ -75,11 +81,17 @@
 						@input="togglePermission({ value: $event, id: permission.id })"/>
 				</q-item-side>
 
-				<q-item-main
-					:label="permission.name"
-					@click.native="select({ type: 'permission', id: permission.id })"/>
+				<q-item-main @click.native="select({ type: 'permission', id: permission.id })">
+					<q-item-tile>
+						{{ permission.name }}
+					</q-item-tile>
 
-				<q-item-side>
+					<q-item-tile>
+						{{ permission.description }}
+					</q-item-tile>
+				</q-item-main>
+
+				<q-item-side v-if="auth_can('permission-remove')">
 					<q-btn flat color="negative" icon="delete" @click.stop="deletePermission(permission)"/>
 				</q-item-side>
 			</q-item>
@@ -97,8 +109,10 @@ import {
 } from 'vuex'
 
 import { User, Permission } from '@/lib'
+import { AuthMixin } from '@/mixins'
 
 export default {
+	mixins: [AuthMixin],
 	data () {
 		return {
 			add: {

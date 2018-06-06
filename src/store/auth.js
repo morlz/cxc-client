@@ -48,7 +48,8 @@ const mutations = {
 }
 
 const getters = {
-	logined: state => !!state.user
+	logined: state => !!state.user,
+	permissions: state => state.user ? state.user.permissions : []
 }
 
 export default {
