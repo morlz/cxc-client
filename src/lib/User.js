@@ -9,7 +9,13 @@ export default class User extends BaseModel {
 		this.define({
 			permissions: [Permission],
 			permissionSetup: [PermissionSetup],
-		}, arg)
+		}, {
+			name: '',
+			pass: '',
+			login: '',
+			role_id: 3,
+			...arg
+		})
 	}
 
 	static async signin (data) {
@@ -47,5 +53,19 @@ export default class User extends BaseModel {
 			return this.photo.substr(5, this.photo.length - 6)
 
 		return this.photo
+	}
+
+	async save () {
+		let res = this.id ? api.put('user', this) : api.post('user', this)
+		if (!res) return
+
+		return this.update(res)
+	}
+
+	async delete () {
+		let res = await api.delete('user', { id: this.id })
+		if (!res) return
+
+		return this.update(res)
 	}
 }

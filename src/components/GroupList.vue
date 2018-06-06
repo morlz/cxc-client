@@ -2,8 +2,13 @@
 	<div class="Menu">
 		<q-list no-border link inset-delimiter>
 			<q-list-header>Администрирование</q-list-header>
+
 			<q-item link to="/permissions">
 				<q-item-main label="Настройка прав"/>
+			</q-item>
+
+			<q-item link to="/groups">
+				<q-item-main label="Настройка групп"/>
 			</q-item>
 		</q-list>
 

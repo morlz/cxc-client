@@ -9,7 +9,11 @@ export default class Permission extends BaseModel {
 		this.define({
 			users: [User],
 			setup: [PermissionSetup]
-		}, arg)
+		}, {
+			name: '',
+			description: '',
+			...arg
+		})
 	}
 
 	static async getList () {
@@ -18,5 +22,19 @@ export default class Permission extends BaseModel {
 			return res.map(el => new Permission(el))
 
 		return res
+	}
+
+	async save () {
+		let res = this.id ? api.put('permission', this) : api.post('permission', this)
+		if (!res) return
+
+		return this.update(res)
+	}
+
+	async delete () {
+		let res = await api.delete('permission', { id: this.id })
+		if (!res) return
+
+		return this.update(res)
 	}
 }

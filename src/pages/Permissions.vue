@@ -3,7 +3,45 @@
 	<q-btn color="primary" class="Permissions__button" @click="save">Сохранить состояние</q-btn>
 
 	<div class="Permissions__lists">
+		<q-card class="AddUserForm">
+			<q-card-main class="AddFormInner">
+				<q-field>
+					<q-input v-model="add.user.name" float-label="ФИО"/>
+				</q-field>
+
+				<q-field>
+					<q-input v-model="add.user.login" float-label="Логин"/>
+				</q-field>
+
+				<q-field>
+					<q-input v-model="add.user.pass" float-label="Пароль"/>
+				</q-field>
+			</q-card-main>
+
+			<q-card-actions>
+				<q-btn color="primary" flat @click="addUser">Добавить</q-btn>
+			</q-card-actions>
+		</q-card>
+
+		<q-card class="AddPermissionForm">
+			<q-card-main class="AddFormInner">
+				<q-field>
+					<q-input v-model="add.permission.name" float-label="Название"/>
+				</q-field>
+
+				<q-field>
+					<q-input v-model="add.permission.description" float-label="Описание"/>
+				</q-field>
+			</q-card-main>
+
+			<q-card-actions>
+				<q-btn color="primary" flat @click="addPermission">Добавить</q-btn>
+			</q-card-actions>
+		</q-card>
+
 		<q-list class="UserList">
+			<q-list-header>Пользователи</q-list-header>
+
 			<q-item
 				v-for="user, index in users"
 				:key="index"
@@ -17,10 +55,16 @@
 				<q-item-main
 					:label="user.name"
 					@click.native="select({ type: 'user', id: user.id })"/>
+
+				<q-item-side>
+					<q-btn flat color="negative" icon="delete" @click.stop="deleteUser(user)"/>
+				</q-item-side>
 			</q-item>
 		</q-list>
 
 		<q-list class="PermissionList">
+			<q-list-header>Права</q-list-header>
+
 			<q-item
 				v-for="permission, index in permissions"
 				:key="index"
@@ -34,6 +78,10 @@
 				<q-item-main
 					:label="permission.name"
 					@click.native="select({ type: 'permission', id: permission.id })"/>
+
+				<q-item-side>
+					<q-btn flat color="negative" icon="delete" @click.stop="deletePermission(permission)"/>
+				</q-item-side>
 			</q-item>
 		</q-list>
 	</div>
@@ -48,20 +96,16 @@ import {
 	mapState
 } from 'vuex'
 
+import { User, Permission } from '@/lib'
+
 export default {
-	components: {
-
-	},
-	props: {
-
-	},
 	data () {
 		return {
-
+			add: {
+				user: new User(),
+				permission: new Permission()
+			}
 		}
-	},
-	watch: {
-
 	},
 	computed: {
 		...mapState('permissions', {
@@ -79,7 +123,9 @@ export default {
 	methods: {
 		...mapActions('permissions', [
 			'save',
-			'init'
+			'init',
+			'deleteUser',
+			'deletePermission'
 		]),
 		...mapMutations('permissions', [
 			'select',
@@ -88,14 +134,19 @@ export default {
 		]),
 		isSelected (type, id) {
 			return this.selected.type == type && this.selected.id == id
+		},
+		async addUser () {
+			await this.$store.dispatch('permissions/addUser', this.add.user)
+			this.add.user = new User()
+		},
+		async addPermission () {
+			await this.$store.dispatch('permissions/addPermission', this.add.permission)
+			this.add.permission = new Permission()
 		}
 	},
 	async created () {
 		await this.init()
 	},
-	mounted () {
-
-	}
 }
 </script>
 
@@ -109,6 +160,7 @@ export default {
 		display grid
 		grid-gap 10px
 		grid-template-columns 1fr 1fr
+		grid-template-rows max-content 1fr
 
 		.q-item
 			cursor pointer
@@ -118,4 +170,8 @@ export default {
 
 	.selected
 		background rgba(189,189,189,0.4)
+
+.AddFormInner
+	display grid
+	grid-gap 10px
 </style>

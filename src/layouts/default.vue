@@ -8,7 +8,6 @@
 
 			<q-toolbar-title>
 				Ведомости
-				<div slot="subtitle">{{ $moment().format('DD-MM-YYYY') }} - {{ $moment().add(1, 'day').format('DD-MM-YYYY') }}</div>
 			</q-toolbar-title>
 		</q-toolbar>
 	</q-layout-header>

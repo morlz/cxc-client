@@ -65,7 +65,7 @@ export default class BaseModel {
 	_init (args) {
 		for (var prop in args)
 			if (args.hasOwnProperty(prop))
-				this[prop] = args[prop]
+				Vue.set(this, prop, args[prop])
 	}
 
 	_getProperty (path) {
@@ -84,7 +84,7 @@ export default class BaseModel {
 	update (val) {
 		for (var prop in val)
 			if (val.hasOwnProperty(prop))
-				this[prop] = val[prop]
+				Vue.set(this, prop, val[prop])
 
 		return this
 	}

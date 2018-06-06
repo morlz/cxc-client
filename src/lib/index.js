@@ -5,6 +5,7 @@ import SheetData from './SheetData'
 import Holiday from './Holiday'
 import Permission from './Permission'
 import PermissionSetup from './PermissionSetup'
+import GroupSetup from './GroupSetup'
 
 export default {}
 
@@ -15,5 +16,6 @@ export {
 	SheetData,
 	Holiday,
 	Permission,
-	PermissionSetup
+	PermissionSetup,
+	GroupSetup
 }

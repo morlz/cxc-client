@@ -21,7 +21,7 @@ export default class PermissionSetup extends BaseModel {
 	}
 
 	static async save (items) {
-		let res = await api.put('permissions-save', { items })
+		let res = await api.put('permission-setup', { items })
 		if (Array.isArray(res))
 			return res.map(el => new PermissionSetup(el))
 

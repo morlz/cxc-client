@@ -54,7 +54,32 @@ const actions = {
 		if (!res) return
 
 		dispatch('notify', 'Успешно сохранено!', { root: true })
+	},
+	async addUser ({ commit, dispatch, state }, user) {
+		let res = await user.save()
+		if (!res) return
+
+		commit('cachedUsersAppend', res)
+	},
+	async addPermission ({ commit, dispatch, state }, permission) {
+		let res = await permission.save()
+		if (!res) return
+
+		commit('cachedPermissionsAppend', res)
+	},
+	async deleteUser ({ commit, dispatch }, user) {
+		let res = await user.delete()
+		if (!res) return
+
+		commit('deleteUserFromCache', res)
+	},
+	async deletePermission ({ commit, dispatch }, permission) {
+		let res = await permission.delete()
+		if (!res) return
+
+		commit('deletePermissionFromCache', res)
 	}
+
 }
 
 const mutations = {
@@ -81,6 +106,10 @@ const mutations = {
 	:	state.cached.setup = state.cached.setup.filter(
 		el => !(el.user_id == state.selected.id && el.permission_id == id)
 	),
+	cachedUsersAppend: (state, payload) => state.cached.users.push(payload),
+	cachedPermissionsAppend: (state, payload) => state.cached.permissions.push(payload),
+	deleteUserFromCache: (state, payload) => state.cached.users = state.cached.users.filter(el => el.id != payload.id),
+	deletePermissionFromCache: (state, payload) => state.cached.permissions = state.cached.permissions.filter(el => el.id != payload.id),
 }
 
 const getters = {
@@ -88,6 +117,7 @@ const getters = {
 	permissionUsers: state => state.cached.setup.filter(el => el.permission_id == state.selected.id).map(el => el.user_id),
 	showToggleUsers: state => state.selected.type == 'permission',
 	showTogglePermissions: state => state.selected.type == 'user',
+	users: state => state.cached.users
 }
 
 export default {
