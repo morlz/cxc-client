@@ -8,7 +8,6 @@ export default {
 	},
 	methods: {
 		auth_can(name) {
-			return true
 			return !!this.auth_permissions.find(el => el.name == name)
 		}
 	}

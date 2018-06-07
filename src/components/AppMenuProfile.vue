@@ -7,7 +7,7 @@
 
 		<q-card-title class="AppMenuProfile__title">
 			{{ user.name }}
-			<q-btn icon="account_box" color="primary" round class="AppMenuProfile__button" @click="$router.push(`/user/${user.id}`)"/>
+			<q-btn icon="account_box" color="primary" round class="AppMenuProfile__button"/>
 
 			<div slot="subtitle" class="AppMenuProfile__email">
 				<div>

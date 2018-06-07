@@ -4,8 +4,8 @@ import path from 'path'
 
 const protocol = 'http'
 //const domain = '95.72.9.114/cxc-server/public/'
-const domain = 'localhost/cxc-server/public/'
-//const domain = 'api.cxc.pew-pc.com/'
+//const domain = 'localhost/cxc-server/public/'
+const domain = 'api.cxc.pew-pc.com/'
 
 class ApiCore extends EventEmitter {
 	async invoke (to, options = {}, method = 'get', i = 0) {

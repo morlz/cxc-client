@@ -9,7 +9,11 @@ export default class PermissionSetup extends BaseModel {
 		this.define({
 			user: User,
 			permission: Permission
-		}, arg)
+		}, {
+			...arg,
+			user_id: +arg.user_id,
+			permission_id: +arg.permission_id
+		})
 	}
 
 	static async getList () {
