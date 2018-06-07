@@ -1,6 +1,5 @@
 <template>
-<div class="SheetResult">
-	<table class="SheetResultTable">
+	<table class="SheetResultTable" id="result">
 		<tr v-if="group.users">
 			<td class="SheetResultTable__1st">Количиство студентов</td>
 			<td colspan="3">{{ group.users.length }}</td>
@@ -47,7 +46,6 @@
 			<td colspan="3"></td>
 		</tr>
 	</table>
-</div>
 </template>
 
 <script>

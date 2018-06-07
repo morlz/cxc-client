@@ -1,10 +1,9 @@
 <template>
-<div class="SheetResultAll">
 	<table class="SheetResultAllTable">
 		<tr>
 			<td class="SheetResultAllTable__1st">Названия месяцев</td>
 
-			<td v-for="tab, index in sheet.monthList" :key="index" colspan="2">
+			<td v-for="tab, index in sheet.monthList" :key="index" colspan="2" ata-type="DateTime">
 				<div class="">
 					{{ tab.format('MMMM YYYY') }}
 				</div>
@@ -76,7 +75,6 @@
 			</td>
 		</tr>
 	</table>
-</div>
 </template>
 
 <script>

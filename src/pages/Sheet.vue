@@ -7,12 +7,13 @@
 
 	<div class="Sheet__content" :key="currentMonth">
 		<template v-if="sheet && currentMonth != 'result'">
-			<q-tabs inverted>
+			<q-tabs inverted v-model="currentTab">
 				<q-tab slot="title" name="table" label="Таблица" default v-if="auth_can('month')"/>
 				<q-tab slot="title" name="res" label="Итог" v-if="auth_can('month-result')"/>
+				<q-btn slot="title" color="primary" @click="toExcel" flat>Экспорт в excel</q-btn>
 
 				<q-tab-pane name="table" v-if="auth_can('month')">
-					<table class="Table">
+					<table class="Table" id="table" ref="monthValues">
 						<tr>
 							<td>
 							</td>
@@ -40,7 +41,11 @@
 									</div>
 								</td>
 
-								<td v-for="value, vIndex in sheet.getData(currentMonth, user.id)" :key="index + '-' + vIndex">
+								<td
+									v-for="value, vIndex in sheet.getData(currentMonth, user.id)"
+									:key="index + '-' + vIndex"
+									data-type="Number"
+									:data-value="value">
 									<div class="Table__value">
 										<table-cell
 											:value="value"
@@ -62,13 +67,13 @@
 				</q-tab-pane>
 
 				<q-tab-pane name="res">
-					<result :month="currentMonth"/>
+					<result :month="currentMonth" ref="monthResult"/>
 				</q-tab-pane>
 			</q-tabs>
 		</template>
 
 		<template v-if="currentMonth == 'result' && auth_can('month-result')">
-			<result-all/>
+			<result-all ref="resultAll"/>
 		</template>
 
 		<q-inner-loading :visible="local_loading">
@@ -87,6 +92,7 @@ import api from '@/api'
 import ResultAll from '@/components/ResultAll'
 import Result from '@/components/Result'
 import { AuthMixin } from '@/mixins'
+import tableToExcel from '@/lib/tableToExcel'
 
 const hours = Array.apply(null, { length: 9 }).map((el, index) => ({
 	label: ((index - 4) * 2).toFixed(),
@@ -103,6 +109,7 @@ export default {
 	data () {
 		return {
 			currentMonth: this.$moment().format('MMMM YYYY'),
+			currentTab: '',
 			hours,
 			holidays: [],
 			holidaysLoading: false
@@ -165,6 +172,76 @@ export default {
 			this.holidaysLoading = true
 			this.holidays = await Holiday.getList(this.$moment(this.currentMonth, 'MMMM YYYY'))
 			this.holidaysLoading = false
+		},
+
+
+		async toExcel () {
+			try {
+				await this.$q.dialog({
+					title: 'Экспорт в excel',
+					message: 'Вы уверены?',
+					ok: 'Да',
+					cancel: 'Нет'
+				})
+				this.toExcel_run()
+			} catch (err) {}
+		},
+		async toExcel_run () {
+			let excel = {
+				sheets: [],
+				sheetNames: []
+			}
+
+			for (let month of this.sheet.monthList) {
+				month = month.format('MMMM YYYY')
+
+				await this.toExcel_goToMonth(month)
+				excel.sheets.push(await this.toExcel_takeCurrentMonth())
+				excel.sheetNames.push(month)
+
+				await this.toExcel_goToCurrentMonthResult()
+				excel.sheets.push(await this.toExcel_takeCurrentMonthResult())
+				excel.sheetNames.push('Итоги месяца ' + month)
+			}
+
+
+			await this.toExcel_goToResultAll()
+			excel.sheets.push(await this.toExcel_takeResultAll())
+			excel.sheetNames.push('Итоги симестра ' + this.sheet.name)
+
+
+			console.log(excel)
+			tableToExcel(excel.sheets, excel.sheetNames, 'TestBook.xls', 'Excel')
+		},
+		async toExcel_goToMonth (month) {
+			this.currentMonth = month
+			await this.waitForRefLoaded('monthValues')
+		},
+		async toExcel_goToCurrentMonthResult () {
+			this.currentTab = 'res'
+			await this.waitForRefLoaded('monthResult')
+		},
+		async toExcel_goToResultAll () {
+			this.currentMonth = 'result'
+			await this.waitForRefLoaded('resultAll')
+		},
+		toExcel_takeCurrentMonth () {
+			return this.$refs.monthValues
+		},
+		toExcel_takeCurrentMonthResult () {
+			return this.$refs.monthResult.$el
+		},
+		toExcel_takeResultAll () {
+			return this.$refs.resultAll.$el
+		},
+
+		async waitForRefLoaded(ref) {
+			let res = await this.waitForRefLoaded_check(ref)
+			if (!res)
+				await this.waitForRefLoaded(ref)
+		},
+		waitForRefLoaded_check (ref) {
+			return new Promise(resolve => setTimeout(() => resolve(this.$refs[ref] !== undefined), 30))
 		}
 	},
 	async created () {
