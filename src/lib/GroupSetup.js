@@ -9,7 +9,11 @@ export default class GroupSetup extends BaseModel {
 		this.define({
 			user: User,
 			group: Group
-		}, arg)
+		}, {
+			...arg,
+			user_id: +arg.user_id,
+			group_id: +arg.group_id
+		})
 	}
 
 	static async getList () {
