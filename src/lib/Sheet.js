@@ -39,14 +39,14 @@ export default class Sheet extends BaseModel {
 	}
 
 	getData (month, user_id) {
-		let mMonth = moment(month),
+		let mMonth = moment(month, 'MMMM YYYY'),
 			offset = this.getMonthDaysOffset(month)
 
 		mMonth.date(1)
 
 		let datas = this.getDataByMonth(month).filter(el => el.user_id == user_id)
-		return Array.apply(null, { length: mMonth.daysInMonth() - offset }).map((el, index) => {
-			let data = this.findDataByDay(datas, index + 1 + offset)
+		return Array.apply(null, { length: mMonth.daysInMonth() - offset.start - offset.end }).map((el, index) => {
+			let data = this.findDataByDay(datas, index + 1 + offset.start)
 			return data ? data.value : 0
 		})
 	}
@@ -121,7 +121,7 @@ export default class Sheet extends BaseModel {
 	}
 
 	get monthList () {
-		return Array.apply(null, { length: Math.ceil(moment.duration(moment(this.to).diff(this.from)).asMonths()) })
+		return Array.apply(null, { length: Math.floor( moment.duration(moment(this.to).diff(this.from)).asMonths() ) + 1 })
 			.map((el, index) => moment(this.from).add(index, 'months'))
 	}
 
@@ -151,8 +151,13 @@ export default class Sheet extends BaseModel {
 	}
 
 	getMonthDaysOffset (date) {
-		return moment(this.from).format('MMMM YYYY') == date ?
-			moment(this.from).date()
-		:	0
+		return {
+			start: moment(this.from).format('MMMM YYYY') == date ?
+				moment(this.from).date() - 1
+			:	0,
+			end: moment(this.to).format('MMMM YYYY') == date ?
+				moment(this.to).daysInMonth() - moment(this.to).date()
+			:	0
+		}
 	}
 }
