@@ -13,12 +13,30 @@
 				<q-btn slot="title" color="primary" @click="toExcel" flat>Экспорт в excel</q-btn>
 
 				<q-tab-pane name="table" v-if="auth_can('month')">
-					<table class="Table" id="table" ref="monthValues">
+					<table class="Table" id="table" ref="monthValues" data-column-width='{"1": 300}'>
+						<template v-if="printing">
+							<tr>
+								<td data-style="Header" :colspan="currentMonthLength + 2">Министерство образования Московской области</td>
+							</tr>
+
+							<tr>
+								<td data-style="Header" :colspan="currentMonthLength + 2">Государственный университет "Дубна" - Дмитровский институт непрерывного образования</td>
+							</tr>
+
+							<tr>
+								<td data-style="Header" :colspan="currentMonthLength + 2">Ведомость учета часов, пропущенных  студентами</td>
+							</tr>
+
+							<tr>
+								<td data-style="Header" :colspan="currentMonthLength + 2">Специальность Программирование в компьютерных системах Курс 4 Группа {{ group.name }} за {{ currentMonth }} года</td>
+							</tr>
+						</template>
+
 						<tr>
 							<td>
 							</td>
 
-							<td v-for="day in currentMonthLength">
+							<td v-for="day in currentMonthLength" data-style="Center">
 								<div class="Table__head">
 									<div class="Table__head-value">
 										{{ currentMonthOffset.start + day }}
@@ -26,7 +44,7 @@
 								</div>
 							</td>
 
-							<td>
+							<td data-style="Center">
 								<div class="">
 									Неуваж / уваж
 								</div>
@@ -128,7 +146,8 @@ export default {
 		...mapState('sheet', {
 			sheet: state => state.cached.current,
 			group: state => state.cached.group,
-			loading: state => state.loading.current || state.loading.group
+			loading: state => state.loading.current || state.loading.group,
+			printing: state => state.printing
 		}),
 		currentMonthLength () {
 			if (this.currentMonth === 'result')
@@ -187,6 +206,8 @@ export default {
 			} catch (err) {}
 		},
 		async toExcel_run () {
+			this.$store.commit('sheet/printingSet', true)
+
 			let excel = {
 				sheets: [],
 				sheetNames: []
@@ -204,14 +225,13 @@ export default {
 				excel.sheetNames.push('Итоги месяца ' + month)
 			}
 
-
 			await this.toExcel_goToResultAll()
 			excel.sheets.push(await this.toExcel_takeResultAll())
 			excel.sheetNames.push('Итоги симестра ' + this.sheet.name)
 
-
 			console.log(excel)
 			tableToExcel(excel.sheets, excel.sheetNames, 'TestBook.xls', 'Excel')
+			this.$store.commit('sheet/printingSet', false)
 		},
 		async toExcel_goToMonth (month) {
 			this.currentMonth = month

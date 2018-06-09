@@ -1,15 +1,31 @@
 <template>
-	<table class="SheetResultAllTable">
+	<table class="SheetResultAllTable" data-column-width='{ "1": 270 }'>
+
+		<template v-if="printing">
+			<tr>
+				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">Министерство образования Московской области</td>
+			</tr>
+			<tr>
+				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">Государственный университет "Дубна" - Дмитровский институт непрерывного образования</td>
+			</tr>
+			<tr>
+				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">ЛИСТ ПОСЕЩАЕМОСТИ</td>
+			</tr>
+			<tr>
+				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">Специальность Программирование в компьютерных системах Курс 4 Группа {{ group.name }} за {{ sheet.name }}</td>
+			</tr>
+		</template>
+
 		<tr>
 			<td class="SheetResultAllTable__1st">Названия месяцев</td>
 
-			<td v-for="tab, index in sheet.monthList" :key="index" colspan="2" ata-type="DateTime">
+			<td v-for="tab, index in sheet.monthList" :key="index" colspan="2" data-style="Center">
 				<div class="">
 					{{ tab.format('MMMM YYYY') }}
 				</div>
 			</td>
 
-			<td colspan="2">
+			<td colspan="2" data-style="Center">
 				<div>
 					Итог
 				</div>
@@ -86,6 +102,7 @@ export default {
 		...mapState('sheet', {
 			sheet: state => state.cached.current,
 			group: state => state.cached.group,
+			printing: state => state.printing
 		}),
 		users () {
 			if (!this.group.users)

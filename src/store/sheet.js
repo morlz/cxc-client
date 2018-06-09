@@ -9,7 +9,8 @@ const state = {
 	loading: {
 		current: false,
 		group: false
-	}
+	},
+	printing: false
 }
 
 const actions = {
@@ -45,6 +46,7 @@ const actions = {
 const mutations = {
 	cachedSet: (state, payload) => state.cached = { ...state.cached, ...payload },
 	loadingSet: (state, payload) => state.loading = { ...state.loading, ...payload },
+	printingSet: (state, payload) => state.printing = payload
 }
 
 const getters = {
