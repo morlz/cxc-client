@@ -10,6 +10,10 @@
 			<q-item link to="/groups" v-if="auth_can('edit-groups')">
 				<q-item-main label="Настройка групп"/>
 			</q-item>
+
+			<q-item link to="/specs" v-if="auth_can('spec')">
+				<q-item-main label="Добавление специальностей"/>
+			</q-item>
 		</q-list>
 
 		<q-list no-border link inset-delimiter v-if="auth_can('sheets')">

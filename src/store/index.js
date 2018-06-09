@@ -8,6 +8,7 @@ import sheet from './sheet'
 import notify from './notify'
 import app from './app'
 import permissions from './permissions'
+import spec from './spec'
 
 export default new Vuex.Store({
 	modules: {
@@ -16,6 +17,7 @@ export default new Vuex.Store({
 		sheet,
 		notify,
 		app,
+		spec,
 		permissions
 	},
 	namespaced: true

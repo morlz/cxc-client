@@ -6,6 +6,7 @@ import Holiday from './Holiday'
 import Permission from './Permission'
 import PermissionSetup from './PermissionSetup'
 import GroupSetup from './GroupSetup'
+import Spec from './Spec'
 
 export default {}
 
@@ -17,5 +18,6 @@ export {
 	Holiday,
 	Permission,
 	PermissionSetup,
-	GroupSetup
+	GroupSetup,
+	Spec
 }
