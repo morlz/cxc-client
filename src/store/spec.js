@@ -25,20 +25,23 @@ const actions = {
 		let res = await spec.save()
 		if (!res) return
 
+		commit('cachedListAppend', res)
 		dispatch('notify', 'Успешно сохранено!', { root: true })
 	},
 	async delete ({ commit, dispatch }, spec) {
 		let res = await spec.delete()
 		if (!res) return
 
+		commit('removeFromCache', res)
 		dispatch('notify', 'Успешно удално!', { root: true })
 	},
-
 }
 
 const mutations = {
 	cachedSet: (state, payload) => state.cached = { ...state.cached, ...payload },
 	loadingSet: (state, payload) => state.loading = { ...state.loading, ...payload },
+	cachedListAppend: (state, payload) => state.cached.list.push(payload),
+	removeFromCache: (state, payload) => state.cached.list = state.cached.list.filter(el => el.id != payload.id)
 }
 
 const getters = {

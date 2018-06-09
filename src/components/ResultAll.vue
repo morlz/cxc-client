@@ -12,7 +12,7 @@
 				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">ЛИСТ ПОСЕЩАЕМОСТИ</td>
 			</tr>
 			<tr>
-				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">Специальность Программирование в компьютерных системах Курс 4 Группа {{ group.name }} за {{ sheet.name }}</td>
+				<td data-style="Header" :colspan="(sheet.monthList.length + 1) * 2 + 1">Специальность {{ group.spec.name }} Курс {{ sheet.getCource(group.addmissionYeare) }} Группа {{ group.name }} за {{ sheet.name }}</td>
 			</tr>
 		</template>
 

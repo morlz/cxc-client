@@ -22,7 +22,7 @@
 				<q-item v-for="sheet, sIndex in group.sheets" link :to="sheet.path" :key="index + '-' + sIndex">
 					<q-item-main :label="sheet.name" />
 					<q-item-side v-if="auth_can('sheet-remove')">
-						<q-btn color="negative" flat icon="delete"/>
+						<q-btn color="negative" flat icon="delete" @click="remove(sheet)"/>
 					</q-item-side>
 				</q-item>
 
@@ -52,6 +52,11 @@ export default {
 		...mapState('group', {
 			list: state => state.cached.list
 		})
+	},
+	methods: {
+		remove (sheet) {
+			this.$store.dispatch('sheet/delete', sheet)
+		}
 	},
 	created () {
 		this.$store.dispatch('group/init')

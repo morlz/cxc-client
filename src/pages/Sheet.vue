@@ -28,7 +28,7 @@
 							</tr>
 
 							<tr>
-								<td data-style="Header" :colspan="currentMonthLength + 2">Специальность Программирование в компьютерных системах Курс 4 Группа {{ group.name }} за {{ currentMonth }} года</td>
+								<td data-style="Header" :colspan="currentMonthLength + 2">Специальность {{ group.spec.name }} системах Курс {{ sheet.getCource(group.addmissionYeare) }} Группа {{ group.name }} за {{ currentMonth }} года</td>
 							</tr>
 						</template>
 

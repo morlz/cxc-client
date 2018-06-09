@@ -1,6 +1,6 @@
 import BaseModel from '@/lib/BaseModel'
 import api from '@/api'
-import { User, Sheet } from '@/lib'
+import { User, Sheet, Spec } from '@/lib'
 import moment from 'moment'
 
 export default class Group extends BaseModel {
@@ -8,7 +8,8 @@ export default class Group extends BaseModel {
 		super()
 		this.define({
 			users: [User],
-			sheets: [Sheet]
+			sheets: [Sheet],
+			spec: Spec
 		}, arg)
 	}
 
@@ -25,5 +26,9 @@ export default class Group extends BaseModel {
 		if (!res) return
 
 		return new Group(res)
+	}
+
+	get addmissionYeare () {
+		return moment(this.name.substr(2, 2), 'YY')
 	}
 }

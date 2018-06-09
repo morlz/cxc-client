@@ -5,7 +5,6 @@ export default class Spec extends BaseModel {
 	constructor (arg) {
 		super()
 		this.define({}, {
-			id: '',
 			code: '',
 			name: '',
 			...arg

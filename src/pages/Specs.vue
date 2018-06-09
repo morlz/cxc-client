@@ -2,10 +2,6 @@
 <q-page padding class="Specs">
 	<q-card>
 		<q-card-main class="Specs__add">
-			<q-field helper="Например 09.02.03">
-				<q-input v-model="form.id" float-label="Код специальности"/>
-			</q-field>
-
 			<q-field helper="Это первые 2 цифры в названии группы">
 				<q-input v-model="form.code" float-label="Префикс"/>
 			</q-field>
@@ -23,21 +19,15 @@
 	<q-list>
 		<q-item v-for="spec, index in specs" :key="index">
 			<q-item-side>
-				{{ spec.code }}
+				{{ spec.id }}
 			</q-item-side>
 
 			<q-item-main>
-				<q-item-tile>
-					{{ spec.name }}
-				</q-item-tile>
-
-				<q-item-tile>
-					{{ spec.id }}
-				</q-item-tile>
+				{{ spec.name }}
 			</q-item-main>
 
 			<q-item-side right>
-				<q-btn color="negative" @click="remove(spec)" falt>Добавить</q-btn>
+				<q-btn color="negative" @click="remove(spec)" flat>Удалить</q-btn>
 			</q-item-side>
 		</q-item>
 	</q-list>
@@ -63,8 +53,8 @@ export default {
 			this.$store.dispatch('spec/save', this.form)
 			this.form = new Spec()
 		},
-		remove () {
-
+		remove (the) {
+			this.$store.dispatch('spec/delete', the)
 		}
 	},
 	created () {

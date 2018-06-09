@@ -38,6 +38,13 @@ export default class Sheet extends BaseModel {
 		return new Sheet(res)
 	}
 
+	async delete () {
+		let res = await api.delete('sheet', { id: this.id })
+		if (!res) return
+
+		return this.update(res)
+	}
+
 	getData (month, user_id) {
 		let mMonth = moment(month, 'MMMM YYYY'),
 			offset = this.getMonthDaysOffset(month)
@@ -159,5 +166,10 @@ export default class Sheet extends BaseModel {
 				moment(this.to).daysInMonth() - moment(this.to).date()
 			:	0
 		}
+	}
+
+	getCource (groupStartYeare) {
+		let from = moment(this.from)
+		return from.year() - groupStartYeare.year() + +(from.month() > 7)
 	}
 }

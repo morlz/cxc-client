@@ -1,4 +1,5 @@
 import { Group, GroupSetup } from '@/lib'
+import Vue from 'vue'
 
 const state = {
 	cached: {
@@ -47,7 +48,6 @@ const actions = {
 
 		dispatch('notify', 'Успешно сохранено!', { root: true })
 	},
-
 }
 
 const mutations = {
@@ -74,6 +74,14 @@ const mutations = {
 	:	state.cached.setup = state.cached.setup.filter(
 		el => !(el.user_id == state.selected.id && el.group_id == id)
 	),
+	removeSheetFromCache: (state, payload) => {
+		let group = state.cached.list.find(el => el.id == payload.group_id)
+		if (!group) return
+		if (router.history.current.fullPath == `/sheet/${payload.id}`)
+			router.push('/')
+
+		Vue.set(group, 'sheets', group.sheets.filter(el => el.id != payload.id))
+	}
 }
 
 const getters = {

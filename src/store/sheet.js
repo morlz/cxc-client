@@ -40,13 +40,20 @@ const actions = {
 		if (!res) return
 
 		await dispatch('group/getList', null, { root: true })
-	}
+	},
+	async delete ({ commit, dispatch }, sheet) {
+		let res = await sheet.delete()
+		if (!res) return
+
+		commit('group/removeSheetFromCache', res, { root: true })
+		dispatch('notify', 'Успешно удално!', { root: true })
+	},
 }
 
 const mutations = {
 	cachedSet: (state, payload) => state.cached = { ...state.cached, ...payload },
 	loadingSet: (state, payload) => state.loading = { ...state.loading, ...payload },
-	printingSet: (state, payload) => state.printing = payload
+	printingSet: (state, payload) => state.printing = payload,
 }
 
 const getters = {
