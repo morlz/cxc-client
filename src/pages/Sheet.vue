@@ -213,21 +213,27 @@ export default {
 				sheetNames: []
 			}
 
-			for (let month of this.sheet.monthList) {
-				month = month.format('MMMM YYYY')
+			if (this.auth_can('month')) {
+				for (let month of this.sheet.monthList) {
+					month = month.format('MMMM YYYY')
 
-				await this.toExcel_goToMonth(month)
-				excel.sheets.push(await this.toExcel_takeCurrentMonth())
-				excel.sheetNames.push(month)
+					await this.toExcel_goToMonth(month)
+					excel.sheets.push(await this.toExcel_takeCurrentMonth())
+					excel.sheetNames.push(month)
 
-				await this.toExcel_goToCurrentMonthResult()
-				excel.sheets.push(await this.toExcel_takeCurrentMonthResult())
-				excel.sheetNames.push('Итоги месяца ' + month)
+					if (this.auth_can('month-result')) {
+						await this.toExcel_goToCurrentMonthResult()
+						excel.sheets.push(await this.toExcel_takeCurrentMonthResult())
+						excel.sheetNames.push('Итоги месяца ' + month)
+					}
+				}
 			}
 
-			await this.toExcel_goToResultAll()
-			excel.sheets.push(await this.toExcel_takeResultAll())
-			excel.sheetNames.push('Итоги симестра ' + this.sheet.name)
+			if (this.auth_can('sheet-result')) {
+				await this.toExcel_goToResultAll()
+				excel.sheets.push(await this.toExcel_takeResultAll())
+				excel.sheetNames.push('Итоги семестра ' + this.sheet.name)
+			}
 
 			console.log(excel)
 			tableToExcel(excel.sheets, excel.sheetNames, 'TestBook.xls', 'Excel')
