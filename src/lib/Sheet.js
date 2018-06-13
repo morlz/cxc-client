@@ -128,7 +128,10 @@ export default class Sheet extends BaseModel {
 	}
 
 	get monthList () {
-		return Array.apply(null, { length: Math.floor( moment.duration(moment(this.to).diff(this.from)).asMonths() ) + 1 })
+		let from = moment(this.from).date(1),
+			to = moment(this.to).date(1)
+
+		return Array.apply(null, { length: Math.round( moment.duration(to.diff(from)).asMonths() ) + 1 })
 			.map((el, index) => moment(this.from).add(index, 'months'))
 	}
 
