@@ -1,13 +1,8 @@
 <template>
 <q-card class="q-ma-md AppMenuProfile" color="white" text-color="blue-grey-14">
 	<template v-if="logined">
-		<q-card-media v-if="user.avatar">
-			<img :src="user.avatar">
-		</q-card-media>
-
 		<q-card-title class="AppMenuProfile__title">
 			{{ user.name }}
-			<q-btn icon="account_box" color="primary" round class="AppMenuProfile__button"/>
 
 			<div slot="subtitle" class="AppMenuProfile__email">
 				<div>
@@ -131,12 +126,6 @@ export default {
 
 	&__title
 		position relative
-
-	&__button
-		position absolute
-		top 0
-		right 16px
-		transform translateY(-50%)
 
 	&__balance
 		color gray
